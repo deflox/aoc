@@ -18,4 +18,10 @@ class Node(val y: Int, val x: Int, val children: MutableSet<Node> = mutableSetOf
         result = 31 * result + x
         return result
     }
+
+    override fun toString(): String {
+        return "Node(y=$y, x=$x)"
+    }
+
+
 }

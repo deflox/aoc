@@ -13,6 +13,8 @@ fun main() {
     val foundPositions = mutableMapOf<Int, MutableSet<Node>>()
     foundPositions.getOrPut(2) { mutableSetOf() }.add(findFirstNode(lines[2]))
 
+    var toTheRight = 0
+
     for (i in 2..lines.size - 2 step 2) {
 
         val nodesToCheck = mutableMapOf<Node, Array<Boolean>>()
@@ -31,6 +33,7 @@ fun main() {
                     if (!entry.value[1]) {
                         addPosition(y, entry.key.x + 1, entry.key, foundPositions)
                         entry.value[1] = true
+                        toTheRight+=1
                     }
                 }
             }
@@ -43,6 +46,7 @@ fun main() {
                 if (!entry.value[1] && lines[y][entry.key.x + 1] == '^') {
                     addPosition(y, entry.key.x + 1, entry.key, foundPositions)
                     entry.value[1] = true
+                    toTheRight+=1
                 }
             }
 
@@ -52,18 +56,18 @@ fun main() {
 
     }
 
-    val list = mutableListOf<Int>()
+    val list = mutableListOf<Long>()
     list.add(0)
     countPaths(foundPositions[2]!!.first(), list)
-    println(list.size + 1)
+    println(list[0] + 1)
 
 }
 
-fun countPaths(node: Node, countingList: MutableList<Int>) {
+fun countPaths(node: Node, countingList: MutableList<Long>) {
     val childrenInOrder = node.children.toList().sortedBy { node -> node.x }
     if (!childrenInOrder.isEmpty()) {
         countPaths(childrenInOrder[0], countingList)
-        countingList[0] = countingList[0] + 1
+        countingList[0] = countingList[0] + 1L
         countPaths(childrenInOrder[1], countingList)
     }
 }
