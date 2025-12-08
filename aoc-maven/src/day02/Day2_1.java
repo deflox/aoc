@@ -1,0 +1,26 @@
+//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+public class Day2_1 {
+  public static void main(String[] args) {
+    String input = "9100-11052,895949-1034027,4408053-4520964,530773-628469,4677-6133,2204535-2244247,55-75,77-96,6855-8537,55102372-55256189,282-399,228723-269241,5874512-6044824,288158-371813,719-924,1-13,496-645,8989806846-8989985017,39376-48796,1581-1964,699387-735189,85832568-85919290,6758902779-6759025318,198-254,1357490-1400527,93895907-94024162,21-34,81399-109054,110780-153182,1452135-1601808,422024-470134,374195-402045,58702-79922,1002-1437,742477-817193,879818128-879948512,407-480,168586-222531,116-152,35-54";
+
+    long sum = 0;
+    String[] ranges = input.split(",");
+    for (String range: ranges) {
+      long start = Long.parseLong(range.split("-")[0]);
+      long end = Long.parseLong(range.split("-")[1]);
+      for (long i = start; i <= end; i++) {
+        String number = String.valueOf(i);
+        if (number.length() % 2 == 0) {
+          if (number.substring(0, number.length() / 2).equals(number.substring(number.length() / 2))) {
+            sum += i;
+          }
+        }
+      }
+
+    }
+
+    System.out.println(sum);
+
+  }
+}
