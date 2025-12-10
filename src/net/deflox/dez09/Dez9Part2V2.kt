@@ -1,47 +1,10 @@
 package net.deflox.dez09
 
 import java.awt.Polygon
-import java.io.File
 
 fun main() {
-    val points = mutableListOf<Point>()
-
-    val polygon = Polygon()
-    File("input.txt").reader().forEachLine {
-        val parse = it.split(",").map { i -> i.toLong() }
-        points.add(Point(parse[0], parse[1]))
-        polygon.addPoint(parse[0].toInt(), parse[1].toInt())
-    }
-
-    val lines = mutableMapOf<Long, Range>()
-    points.sortedWith(compareBy(Point::y, Point::x)).toMutableList().forEach { point ->
-        if (!lines.containsKey(point.y)) {
-            lines[point.y] = Range(point.x, 0)
-        }
-        lines[point.y] = Range(lines[point.y]!!.from, point.x)
-    }
-
-    val columns = mutableMapOf<Long, Range>()
-    points.sortedWith(compareBy(Point::x, Point::y)).toMutableList().forEach { point ->
-        if (!columns.containsKey(point.x)) {
-            columns[point.x] = Range(point.y, 0)
-        }
-        columns[point.x] = Range(columns[point.x]!!.from, point.y)
-    }
-
-    var biggestArea = 0L
-    points.forEach { p1 ->
-        points.forEach { p2 ->
-            if (insideShape(p1, p2, polygon)) {
-                val newArea = (-1L * (p1.x - p2.x + 1)) * (-1L * (p1.y - p2.y + 1))
-                if (newArea > biggestArea) {
-                    biggestArea = newArea
-                }
-            }
-        }
-    }
-
-    println(biggestArea)
+    val range = 0..0
+    println(range.min() == 0 && range.max() == 0)
 
 }
 

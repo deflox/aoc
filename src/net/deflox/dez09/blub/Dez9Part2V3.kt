@@ -6,27 +6,15 @@ import java.io.File
 fun main() {
     val points = mutableSetOf<Point>()
     val polygon = Polygon()
-
+    val lines = mutableMapOf<Long, Range>()
+    val columns = mutableMapOf<Long, Range>()
     File("input.txt").reader().forEachLine {
         val parse = it.split(",").map { i -> i.toLong() }
-        points.add(Point(parse[0], parse[1]))
-        polygon.addPoint(parse[0].toInt(), parse[1].toInt())
-    }
-
-    val lines = mutableMapOf<Long, Range>()
-    points.sortedWith(compareBy(Point::y, Point::x)).toMutableList().forEach { point ->
-        if (!lines.containsKey(point.y)) {
-            lines[point.y] = Range(point.x, 0)
-        }
-        lines[point.y] = Range(lines[point.y]!!.from, point.x)
-    }
-
-    val columns = mutableMapOf<Long, Range>()
-    points.sortedWith(compareBy(Point::x, Point::y)).toMutableList().forEach { point ->
-        if (!columns.containsKey(point.x)) {
-            columns[point.x] = Range(point.y, 0)
-        }
-        columns[point.x] = Range(columns[point.x]!!.from, point.y)
+        val point = Point(parse[0], parse[1])
+        points.add(point)
+        polygon.addPoint(point.x.toInt(), point.y.toInt())
+        add(point.y, point.x, lines)
+        add(point.x, point.y, columns)
     }
 
     val seen = mutableSetOf<PointPair>()
@@ -48,6 +36,19 @@ fun main() {
 
     println(biggestArea)
 
+}
+
+fun add(key: Long, value: Long, map: MutableMap<Long, Range>) {
+    if (!map.containsKey(key)) {
+        map[key] = Range(value, 0)
+    }
+    else if (value > map[key]!!.from) {
+        map[key]!!.to = value
+    }
+    else {
+        map[key]!!.to = map[key]!!.from
+        map[key]!!.from = value
+    }
 }
 
 fun insideShape(p1: Point, p2: Point, polygon: Polygon, points: MutableSet<Point>, lines: MutableMap<Long, Range>, columns: MutableMap<Long, Range>): Boolean {
