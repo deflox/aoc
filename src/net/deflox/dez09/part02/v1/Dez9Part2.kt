@@ -1,4 +1,4 @@
-package net.deflox.dez09
+package net.deflox.dez09.part02.v1
 
 import java.awt.Polygon
 

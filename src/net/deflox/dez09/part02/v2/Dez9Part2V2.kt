@@ -1,7 +1,8 @@
-package net.deflox.dez09.blub
+package net.deflox.dez09.part02.v2
 
 import java.awt.Polygon
 import java.io.File
+import kotlin.math.abs
 
 fun main() {
     val points = mutableSetOf<Point>()
@@ -17,16 +18,20 @@ fun main() {
         add(point.x, point.y, columns)
     }
 
+    // 1539238860
+    // PointPair(p1=(5398,67501), p2=(94737,50273))
     val seen = mutableSetOf<PointPair>()
     var biggestArea = 0L
+    var biggestPointPair: PointPair? = null
     points.forEachIndexed { index, p1 ->
         println("Processing: $index: $p1")
         points.forEach { p2 ->
             if (p1 != p2 && !seen.contains(PointPair(p1, p2))) {
                 if (insideShape(p1, p2, polygon, points, lines, columns)) {
-                    val newArea = (-1L * (p1.x - p2.x + 1)) * (-1L * (p1.y - p2.y + 1))
+                    val newArea = (abs(p1.x - p2.x) + 1) * (abs(p1.y - p2.y) + 1)
                     if (newArea > biggestArea) {
                         biggestArea = newArea
+                        biggestPointPair = PointPair(p1, p2)
                     }
                 }
                 seen.add(PointPair(p2, p1))
@@ -35,6 +40,7 @@ fun main() {
     }
 
     println(biggestArea)
+    println(biggestPointPair)
 
 }
 
@@ -125,5 +131,9 @@ class PointPair(val p1: Point, val p2: Point) {
         var result = p1.hashCode()
         result = 31 * result + p2.hashCode()
         return result
+    }
+
+    override fun toString(): String {
+        return "PointPair(p1=$p1, p2=$p2)"
     }
 }
